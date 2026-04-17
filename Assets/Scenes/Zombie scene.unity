@@ -537,39 +537,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1352753540370996, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1862164840}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
---- !u!1 &1862164839 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1352753540370996, guid: 43b3bfc3c2f2ff146a8d85e63d0a4e26, type: 3}
-  m_PrefabInstance: {fileID: 1862164838}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1862164840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862164839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4af4590b73741ad478a78bd6b7452fb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  zombieAgent: {fileID: 0}
-  LookPoint: {fileID: 0}
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  walkPoints: []
-  zombieSpeed: 0
-  visionRadius: 0
-  attackingRadius: 0
-  playerInVisionRadius: 0
-  playerInAttackingRadius: 0
 --- !u!1001 &1883586563
 PrefabInstance:
   m_ObjectHideFlags: 0
