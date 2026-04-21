@@ -4,38 +4,30 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-
     [SerializeField] private float StartingHealth;
     private float health;
-
-    public float Health 
+    public float Health
     {
-        get 
-        { 
+        get
+        {
             return health;
         }
 
-        set 
-        { 
+        set
+        {
             health = value;
             Debug.Log(health);
 
-            if (health <= 0f) 
+            if (health <= 0f)
             {
                 Destroy(gameObject);
             }
 
         }
     }
-
     void Start()
     {
         Health = StartingHealth;
     }
 
-    
-    void Update()
-    {
-        
-    }
 }
