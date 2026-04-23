@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -68,12 +69,16 @@ public class Walking : MonoBehaviour
 
     private void AttackPlayer()
     {
-        if(!previouslyAttacked)
+        zombieAgent.SetDestination(transform.position);
+        transform.LookAt(lookPoint);
+        if (!previouslyAttacked)
         {
-            RaycastHit hitinfo;
-            if(Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitinfo, attackingRadius))
+            RaycastHit hitInfo;
+            if(Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitInfo, attackingRadius))
             {
-                Debug.Log("Attacking" + hitinfo.transform.name);
+                Debug.Log("Attacking" + hitInfo.transform.name);
+
+                PlayerMovement playerBody = hitInfo.transform.GetComponent<PlayerMovement>();
             }
             previouslyAttacked = true;
             Invoke(nameof(ActiveAttacking), timeBtwAttack);
