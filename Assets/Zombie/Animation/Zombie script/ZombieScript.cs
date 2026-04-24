@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Build;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Walking : MonoBehaviour
+public class ZombieScript : MonoBehaviour
 {
     [Header("Zombie and Damage")]
+    public float zombieHealth = 20f;
+    public float presentHealth;
     public float giveDamage = 5f;
 
     [Header("Zombie Things")]
     public NavMeshAgent zombieAgent;
     public Transform lookPoint;
-    public Camera AttackingRaycastArea;
+    public GameObject AttackingRaycastArea;
     public Transform playerBody;
     public LayerMask playerLayer;
 
@@ -24,7 +27,7 @@ public class Walking : MonoBehaviour
 
     [Header("Zombie Attacking Var")]
     public float timeBtwAttack;
-    bool previouslyAttacked;
+    public bool previouslyAttacked;
 
     [Header("Zombie mood/states")]
     public float visionRadius;
@@ -34,6 +37,7 @@ public class Walking : MonoBehaviour
 
     private void Awake()
     {
+        presentHealth = zombieHealth;
         zombieAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -69,16 +73,26 @@ public class Walking : MonoBehaviour
 
     private void AttackPlayer()
     {
+        Debug.Log("AttackPlayer triggered", this);
+
         zombieAgent.SetDestination(transform.position);
         transform.LookAt(lookPoint);
         if (!previouslyAttacked)
         {
+            Debug.Log("AttackPlayer 1st if", this);
             RaycastHit hitInfo;
+    
             if(Physics.Raycast(AttackingRaycastArea.transform.position, AttackingRaycastArea.transform.forward, out hitInfo, attackingRadius))
             {
-                Debug.Log("Attacking" + hitInfo.transform.name);
+                Debug.Log("Attacking (2nd if) " + hitInfo.transform.name);
 
-                PlayerMovement playerBody = hitInfo.transform.GetComponent<PlayerMovement>();
+                PlayerTakeDamage playerBody = hitInfo.transform.GetComponent<PlayerTakeDamage>();
+
+                if (playerBody != null)
+                {
+                    Debug.Log("Attacking 3rd if", this);
+                    playerBody.playerHitDamage(giveDamage);
+                }
             }
             previouslyAttacked = true;
             Invoke(nameof(ActiveAttacking), timeBtwAttack);
@@ -87,6 +101,25 @@ public class Walking : MonoBehaviour
     private void ActiveAttacking()
     {
         previouslyAttacked = false;
+    }
+    public void zombieHitDamage(float takeDamage)
+    {
+        presentHealth -= takeDamage;
+        if (presentHealth < 0)
+        {
+            zombieDie();
+        }
+    }
+
+    private void zombieDie()
+    {
+        zombieAgent.SetDestination(transform.position);
+        zombieSpeed = 0;
+        attackingRadius = 0;
+        visionRadius = 0;
+        playerInAttackingRadius = false;
+        playerInVisionRadius = false;
+        Object.Destroy(gameObject, 5.0f);
     }
 }
 
