@@ -29,6 +29,9 @@ public class ZombieScript : MonoBehaviour
     public float timeBtwAttack;
     public bool previouslyAttacked;
 
+    [Header("Zombie Animations")]
+    public Animator zombieAnim;
+
     [Header("Zombie mood/states")]
     public float visionRadius;
     public float attackingRadius;
@@ -68,7 +71,22 @@ public class ZombieScript : MonoBehaviour
     }
     private void Pursueplayer()
     {
-        zombieAgent.SetDestination(playerBody.position);
+        if(zombieAgent.SetDestination(playerBody.position))
+        {
+            Debug.Log("Animaton 1st", this);
+            zombieAnim.SetBool("Walking", false);
+            zombieAnim.SetBool("Attacking", false);
+            zombieAnim.SetBool("Running", true);
+            zombieAnim.SetBool("Dead", false);
+        }
+        else
+        {
+            Debug.Log("Animaton 2nd", this);
+            zombieAnim.SetBool("Walking", false);
+            zombieAnim.SetBool("Attacking", false);
+            zombieAnim.SetBool("Running", false);
+            zombieAnim.SetBool("Dead", true);
+        }
     }
 
     private void AttackPlayer()
@@ -93,6 +111,11 @@ public class ZombieScript : MonoBehaviour
                     Debug.Log("Attacking 3rd if", this);
                     playerBody.playerHitDamage(giveDamage);
                 }
+                Debug.Log("Animaton 3rd", this);
+                zombieAnim.SetBool("Walking", false);
+                zombieAnim.SetBool("Attacking", true);
+                zombieAnim.SetBool("Running", false);
+                zombieAnim.SetBool("Dead", false);
             }
             previouslyAttacked = true;
             Invoke(nameof(ActiveAttacking), timeBtwAttack);
@@ -105,8 +128,13 @@ public class ZombieScript : MonoBehaviour
     public void zombieHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-        if (presentHealth < 0)
+        if (presentHealth <= 0)
         {
+            Debug.Log("Animaton 4th", this);
+            zombieAnim.SetBool("Walking", false);
+            zombieAnim.SetBool("Attacking", false);
+            zombieAnim.SetBool("Running", false);
+            zombieAnim.SetBool("Dead", true);
             zombieDie();
         }
     }
@@ -114,9 +142,9 @@ public class ZombieScript : MonoBehaviour
     private void zombieDie()
     {
         zombieAgent.SetDestination(transform.position);
-        zombieSpeed = 0;
-        attackingRadius = 0;
-        visionRadius = 0;
+        zombieSpeed = 0f;
+        attackingRadius = 0f;
+        visionRadius = 0f;
         playerInAttackingRadius = false;
         playerInVisionRadius = false;
         Object.Destroy(gameObject, 5.0f);
