@@ -20,20 +20,25 @@ public class Shooting : MonoBehaviour
 
     void Update()
     {
-        if (automatic)
-
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (CurrentCooldown <= 0f)
-                {
-                    OnGunShoot?.Invoke();
-                    CurrentCooldown = FireCooldown;
-                }
-            }
-        }
-
         CurrentCooldown -= Time.deltaTime;
 
+        if (automatic)
+        {
+            // Håll nere för helautomatisk
+            if (Input.GetMouseButton(0) && CurrentCooldown <= 0f)
+            {
+                OnGunShoot?.Invoke();
+                CurrentCooldown = FireCooldown;
+            }
+        }
+        else
+        {
+            // Ett skott per klick (semi-auto)
+            if (Input.GetMouseButtonDown(0) && CurrentCooldown <= 0f)
+            {
+                OnGunShoot?.Invoke();
+                CurrentCooldown = FireCooldown;
+            }
+        }
     }
 }

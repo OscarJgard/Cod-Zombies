@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Movement start");
         Controller = GetComponent<CharacterController>();
     }
 
