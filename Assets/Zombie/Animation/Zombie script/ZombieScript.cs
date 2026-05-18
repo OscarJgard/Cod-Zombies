@@ -49,6 +49,11 @@ public class ZombieScript : MonoBehaviour
         if (!playerInVisionRadius && !playerInAttackingRadius) Guard();
         if (playerInVisionRadius && !playerInAttackingRadius) Pursueplayer();
         if (playerInVisionRadius && playerInAttackingRadius) AttackPlayer();
+
+        if (presentHealth < 0)
+        {
+            zombieDie();
+        }
     }
 
     private void Guard()
@@ -105,21 +110,19 @@ public class ZombieScript : MonoBehaviour
     public void zombieHitDamage(float takeDamage)
     {
         presentHealth -= takeDamage;
-        if (presentHealth < 0)
-        {
-            zombieDie();
-        }
+
     }
 
     private void zombieDie()
     {
+        Debug.Log("Die");
         zombieAgent.SetDestination(transform.position);
         zombieSpeed = 0;
         attackingRadius = 0;
         visionRadius = 0;
         playerInAttackingRadius = false;
         playerInVisionRadius = false;
-        Object.Destroy(gameObject, 5.0f);
+        Object.Destroy(gameObject);
     }
 }
 
